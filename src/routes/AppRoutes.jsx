@@ -6,8 +6,8 @@ import Dashboard from "../pages/Dashboard";
 import Payment from "../pages/Payment";
 import InvoiceView from "../pages/InvoiceView";
 import InvoiceCreate from "../pages/InvoiceCreate.jsx";
-import Login from "../pages/login.jsx";
-import Chat from "../pages/chat.jsx";
+import Login from "../pages/Login.jsx";
+import Chat from "../pages/Chat.jsx";
 import ProtectedRoute from "./ProtectedRoute";
 
 /* Company Module */
