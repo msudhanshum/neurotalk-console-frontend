@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URLS } from "../api/apiConstants";
 
 const EditCompany = () => {
 
@@ -32,8 +33,8 @@ const EditCompany = () => {
     try {
 
       const res = await axios.get(
-        `http://127.0.0.1:5000/api/v1/company/details/${id}`
-      );
+  `${API_URLS.COMPANY.DETAILS}/${id}`
+);
 
       setForm(res.data.data);
 
@@ -77,7 +78,7 @@ const EditCompany = () => {
       });
 
       const res = await axios.put(
-        `http://127.0.0.1:5000/api/v1/company/update/${id}`,
+        `${API_URLS.COMPANY.UPDATE}/${id}`, 
         formData,
         {
           headers:{

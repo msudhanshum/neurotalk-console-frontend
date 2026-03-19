@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URLS } from "../api/apiConstants";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -16,7 +17,7 @@ const Profile = () => {
         sessionStorage.getItem("refreshToken");
 
       await axios.post(
-        "http://127.0.0.1:5000/api/v1/auth/logout",
+        API_URLS.LOGOUT,
         { refreshToken },
         {
           headers: {

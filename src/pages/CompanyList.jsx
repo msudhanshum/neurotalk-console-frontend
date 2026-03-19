@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { API_URLS } from "../api/apiConstants";
 
 const CompanyList = () => {
   const [companies, setCompanies] = useState([]);
@@ -9,7 +10,7 @@ const CompanyList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = "http://127.0.0.1:5000/api/v1/company/list";
+  const API_URL = API_URLS.COMPANY.LIST;
   const LIMIT = 10;
 
   /* ================= FETCH COMPANIES ================= */
@@ -56,7 +57,7 @@ const CompanyList = () => {
       try {
 
         await axios.patch(
-          `http://127.0.0.1:5000/api/v1/company/change-status/${company._id}`,
+          `${API_URLS.COMPANY.CHANGE_STATUS}/${company._id}`,
           {
             status: newStatus   // ✅ BODY SEND HO RAHI HAI
           },
@@ -100,7 +101,7 @@ const CompanyList = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(
-            `http://127.0.0.1:5000/api/v1/company/delete/${id}`,
+            `${API_URLS.COMPANY.DELETE}/${id}`,
           );
 
           Swal.fire("Deleted!", "Company removed", "success");

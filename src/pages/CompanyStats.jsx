@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URLS } from "../api/apiConstants";
 
 const CompanyStats = () => {
 
@@ -10,8 +11,7 @@ const CompanyStats = () => {
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API =
-    "http://127.0.0.1:5000/api/v1/company/details/";
+ const API = API_URLS.COMPANY.DETAILS;
 
   /* ================= FETCH COMPANY ================= */
 

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { API_URLS } from "../api/apiConstants";
 
-const API_URL = "http://127.0.0.1:5000/api/v1/auth/login";
+const API_URL = API_URLS.AUTH.LOGIN;
 
 const Login = () => {
 
@@ -224,6 +225,7 @@ cursor:not-allowed;
 .remember-row{
 display:flex;
 align-items:center;
+
 margin-bottom:15px;
 font-size:14px;
 }
@@ -231,6 +233,7 @@ font-size:14px;
 .remember-row input{
 width:auto;
 margin-right:8px;
+margin-top:18px;
 }
 
 .lock-warning{

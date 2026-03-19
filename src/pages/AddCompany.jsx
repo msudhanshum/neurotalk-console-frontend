@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { API_URLS } from "../api/apiConstants";
 
 const AddCompany = () => {
 
@@ -70,7 +71,7 @@ const handleSubmit=async(e)=>{
     })
 
     const res = await axios.post(
-      "http://127.0.0.1:5000/api/v1/company/create",
+      API_URLS.CREATE_COMPANY, 
       formData,
       {
         headers:{
