@@ -2,16 +2,16 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const API_URLS = {
  AUTH: {
-  LOGIN: `${BASE_URL}/auth/login`,
-  LOGOUT: `${BASE_URL}/auth/logout`,
+  LOGIN: `${BASE_URL}/api/v1/auth/login`,
+  LOGOUT: `${BASE_URL}/api/v1/auth/logout`,
 }, 
  
  COMPANY: {
-   CREATE_COMPANY: `${BASE_URL}/company/create`,
-   LIST: `${BASE_URL}/company/list`,
-   DELETE: `${BASE_URL}/company/delete`,
-   CHANGE_STATUS: `${BASE_URL}/company/change-status`,
-   DETAILS: `${BASE_URL}/company/details`,
-   UPDATE: `${BASE_URL}/company/update`,
+   CREATE_COMPANY: `${BASE_URL}/api/v1/company`,
+   LIST: `${BASE_URL}/api/v1/company`,
+   DELETE: `${BASE_URL}/api/v1/company`,
+   CHANGE_STATUS: `${BASE_URL}/api/v1/company`,
+   DETAILS: `${BASE_URL}/api/v1/company`,
+   UPDATE: `${BASE_URL}/api/v1/company`,
   },
 };

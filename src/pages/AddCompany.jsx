@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_URLS } from "../api/apiConstants";
 
 const AddCompany = () => {
 
+const fileRef = useRef(); // ✅ for file reset
+
 const [form,setForm] = useState({
-  companyName:"",
+  name:"",
   contactPerson:"",
   designation:"",
-  contactMobile:"",
-  companyAddress:"",
-  cin:"",
-  gstin:"",
-  panNumber:"",
-  panImage:null,
+  mobile:"",
+  address:"",
+  CIN:"",
+  GSTIN:"",
+  PANNumber:"",
+  PANImage:null,
   email:"",
-  phoneNumber:"",
-  subscriptionPlan:"Basic",
+  phone:"",
+  subscriptionPlan:"",
   status:"Active"
 })
 
@@ -29,8 +31,8 @@ const [loading,setLoading] = useState(false)
 const handleChange=(e)=>{
   const {name,value,files} = e.target
 
-  if(name==="panImage"){
-    setForm({...form,panImage:files[0]})
+  if(name==="PANImage"){
+    setForm({...form,PANImage:files[0]})
   }else{
     setForm({...form,[name]:value})
   }
@@ -38,61 +40,100 @@ const handleChange=(e)=>{
 
 /* ================= VALIDATION ================= */
 
-const validate=()=>{
-  let err={}
+const validate = () => {
+  let err = {};
 
-  if(!form.companyName) err.companyName="Required"
-  if(!form.contactPerson) err.contactPerson="Required"
-  if(!form.designation) err.designation="Required"
-  if(!form.contactMobile) err.contactMobile="Required"
-  if(!form.companyAddress) err.companyAddress="Required"
-  if(!form.email) err.email="Required"
-  if(!form.panImage) err.panImage="Required"
+  if (!form.name) err.name = "Required";
+  if (!form.contactPerson) err.contactPerson = "Required";
+  if (!form.designation) err.designation = "Required";
+  if (!form.mobile) err.mobile = "Required";
+  if (!form.address) err.address = "Required";
+  if (!form.email) err.email = "Required";
+  if (!form.phone) err.phone = "Required";
+  if (!form.CIN) err.CIN = "Required";
+  if (!form.GSTIN) err.GSTIN = "Required";
+  if (!form.PANNumber) err.PANNumber = "Required";
+  if (!form.subscriptionPlan) err.subscriptionPlan = "Required";
 
-  setErrors(err)
-  return Object.keys(err).length===0
-}
+  setErrors(err);
+  return Object.keys(err).length === 0;
+};
 
 /* ================= SUBMIT ================= */
 
-const handleSubmit=async(e)=>{
-  e.preventDefault()
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  if(!validate()) return
+  if (!validate()) return;
 
-  try{
-    setLoading(true)
+  try {
+    setLoading(true);
 
-    const formData = new FormData()
+    const formData = new FormData();
 
-    // ✅ ALL FIELDS AUTO APPEND
-    Object.entries(form).forEach(([key,value])=>{
-      formData.append(key,value)
-    })
+    Object.entries(form).forEach(([key, value]) => {
+      if (value !== null && value !== "") {
+        formData.append(key, value);
+      }
+    });
+
+    const token =
+      localStorage.getItem("token") ||
+      sessionStorage.getItem("token");
 
     const res = await axios.post(
-      API_URLS.CREATE_COMPANY, 
+      API_URLS.COMPANY.CREATE_COMPANY,
       formData,
       {
-        headers:{
-          "Content-Type":"multipart/form-data"
-        }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    )
+    );
 
-    Swal.fire("Success",res.data.message,"success")
+    // ✅ SUCCESS MESSAGE
+    Swal.fire({
+      icon: "success",
+      title: "Company Created",
+      text: res.data.message,
+      timer: 1500,
+      showConfirmButton: false
+    });
 
-  }catch(error){
+    // ✅ RESET FORM
+    setForm({
+      name: "",
+      contactPerson: "",
+      designation: "",
+      mobile: "",
+      address: "",
+      CIN: "",
+      GSTIN: "",
+      PANNumber: "",
+      PANImage: null,
+      email: "",
+      phone: "",
+      subscriptionPlan: "",
+      status: "Active"
+    });
+
+    // ✅ RESET FILE INPUT
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+
+  } catch (error) {
+    console.log("ADD ERROR:", error.response);
+
     Swal.fire(
       "Error",
       error?.response?.data?.message || "Server Error",
       "error"
-    )
+    );
+  } finally {
+    setLoading(false);
   }
-  finally{
-    setLoading(false)
-  }
-}
+};
 
 /* ================= UI ================= */
 
@@ -110,7 +151,7 @@ return (
 {/* Company */}
 <div className="col-md-4 mb-3">
 <label>Company Name</label>
-<input name="companyName" value={form.companyName} onChange={handleChange} className="form-control"/>
+<input name="name" value={form.name} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* Contact Person */}
@@ -128,7 +169,7 @@ return (
 {/* Mobile */}
 <div className="col-md-4 mb-3">
 <label>Mobile</label>
-<input name="contactMobile" value={form.contactMobile} onChange={handleChange} className="form-control"/>
+<input name="mobile" value={form.mobile} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* Email */}
@@ -140,46 +181,53 @@ return (
 {/* Phone */}
 <div className="col-md-4 mb-3">
 <label>Phone</label>
-<input name="phoneNumber" value={form.phoneNumber} onChange={handleChange} className="form-control"/>
+<input name="phone" value={form.phone} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* Address */}
 <div className="col-md-6 mb-3">
 <label>Company Address</label>
-<input name="companyAddress" value={form.companyAddress} onChange={handleChange} className="form-control"/>
+<input name="address" value={form.address} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* CIN */}
 <div className="col-md-3 mb-3">
 <label>CIN</label>
-<input name="cin" value={form.cin} onChange={handleChange} className="form-control"/>
+<input name="CIN" value={form.CIN} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* GSTIN */}
 <div className="col-md-3 mb-3">
 <label>GSTIN</label>
-<input name="gstin" value={form.gstin} onChange={handleChange} className="form-control"/>
+<input name="GSTIN" value={form.GSTIN} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* PAN */}
 <div className="col-md-4 mb-3">
 <label>PAN Number</label>
-<input name="panNumber" value={form.panNumber} onChange={handleChange} className="form-control"/>
+<input name="PANNumber" value={form.PANNumber} onChange={handleChange} className="form-control"/>
 </div>
 
 {/* PAN Image */}
 <div className="col-md-4 mb-3">
 <label>PAN Image</label>
-<input type="file" name="panImage" onChange={handleChange} className="form-control"/>
+<input
+  type="file"
+  name="PANImage"
+  ref={fileRef}
+  onChange={handleChange}
+  className="form-control"
+/>
 </div>
 
 {/* Plan */}
 <div className="col-md-4 mb-3">
 <label>Subscription Plan</label>
 <select name="subscriptionPlan" value={form.subscriptionPlan} onChange={handleChange} className="form-control">
-<option>Basic</option>
-<option>Standard</option>
-<option>Premium</option>
+<option value="">Select Plan</option>
+<option value="Basic">Basic</option>
+<option value="Standard">Standard</option>
+<option value="Premium">Premium</option>
 </select>
 </div>
 
@@ -206,4 +254,4 @@ return (
 )
 }
 
-export default AddCompany
+export default AddCompany;

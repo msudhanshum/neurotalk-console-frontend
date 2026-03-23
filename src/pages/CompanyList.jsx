@@ -13,81 +13,87 @@ const CompanyList = () => {
   const API_URL = API_URLS.COMPANY.LIST;
   const LIMIT = 10;
 
+  // ✅ COMMON TOKEN (use everywhere)
+  const getToken = () =>
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
+
   /* ================= FETCH COMPANIES ================= */
 
   const fetchCompanies = async (page = 1) => {
     setLoading(true);
 
     try {
-      const res = await axios.get(`${API_URL}?page=${page}&limit=${LIMIT}`);
+      const res = await axios.get(
+        `${API_URL}?page=${page}&limit=${LIMIT}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
 
-      setCompanies(res.data.data || []);
+      console.log("API DATA:", res.data );
+
+      setCompanies(res.data.companies || []);
       setTotalPages(res.data.totalPages || 1);
     } catch (error) {
       console.log(error);
       Swal.fire("Error", "Company list load failed", "error");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchCompanies(currentPage);
   }, [currentPage]);
 
-  /* ================= STATUS TOGGLE (UI ONLY) ================= */
+  /* ================= STATUS TOGGLE ================= */
 
- const toggleStatus = async (company) => {
+  const toggleStatus = async (company) => {
+    const newStatus =
+      company.status === "Active" ? "Suspended" : "Active";
 
-  const newStatus =
-    company.status === "Active"
-      ? "Suspended"
-      : "Active";
-
-  Swal.fire({
-    title: "Are you sure?",
-    text: "Change company status?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes change it"
-  }).then(async (result) => {
-
-    if (result.isConfirmed) {
-
-      try {
-
-        await axios.patch(
-          `${API_URLS.COMPANY.CHANGE_STATUS}/${company._id}`,
-          {
-            status: newStatus   // ✅ BODY SEND HO RAHI HAI
-          },
-          {
-            headers: {
-              "Content-Type": "application/json"
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Change company status?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes change it",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.patch(
+            `${API_URLS.COMPANY.CHANGE_STATUS}/${company._id}/${"status"}`,
+            { status: newStatus },
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+                "Content-Type": "application/json",
+              },
             }
-          }
-        );
+          );
 
-        // UI update
-        setCompanies(prev =>
-          prev.map(c =>
-            c._id === company._id
-              ? { ...c, status: newStatus }
-              : c
-          )
-        );
+          // UI update
+          setCompanies((prev) =>
+            prev.map((c) =>
+              c._id === company._id
+                ? { ...c, status: newStatus }
+                : c
+            )
+          );
 
-        Swal.fire("Updated!", "Status updated", "success");
-
-      } catch (err) {
-        console.log("STATUS ERROR:", err.response);
-        Swal.fire("Error", "Status update failed", "error");
+          Swal.fire("Updated!", "Status updated", "success");
+        } catch (err) {
+          console.log("STATUS ERROR:", err.response);
+          Swal.fire("Error", "Status update failed", "error");
+        }
       }
-    }
-  });
-};
+    });
+  };
 
-  /* ================= DELETE (UI ONLY) ================= */
+  /* ================= DELETE ================= */
 
   const deleteCompany = (id) => {
     Swal.fire({
@@ -102,11 +108,15 @@ const CompanyList = () => {
         try {
           await axios.delete(
             `${API_URLS.COMPANY.DELETE}/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
           );
 
           Swal.fire("Deleted!", "Company removed", "success");
 
-          // reload list
           fetchCompanies(currentPage);
         } catch (error) {
           Swal.fire("Error", "Delete failed", "error");
@@ -132,10 +142,13 @@ const CompanyList = () => {
           key={i}
           className={`page-item ${currentPage === i ? "active" : ""}`}
         >
-          <button className="page-link" onClick={() => handlePage(i)}>
+          <button
+            className="page-link"
+            onClick={() => handlePage(i)}
+          >
             {i}
           </button>
-        </li>,
+        </li>
       );
     }
 
@@ -150,15 +163,16 @@ const CompanyList = () => {
 
       <div className="card shadow-sm">
         <div className="card-body">
-          {/* ADD BUTTON */}
           <div className="d-flex justify-content-end mb-3">
-            <Link to="/dashboard/add-company" className="btn btn-primary">
+            <Link
+              to="/dashboard/add-company"
+              className="btn btn-primary"
+            >
               <i className="fas fa-plus me-2"></i>
               Add Company
             </Link>
           </div>
 
-          {/* TABLE */}
           <table className="table table-hover table-bordered align-middle">
             <thead className="table-dark">
               <tr>
@@ -188,9 +202,9 @@ const CompanyList = () => {
               ) : (
                 companies.map((c, index) => (
                   <tr key={c._id}>
-                    {/* SERIAL NUMBER */}
-                    <td>{(currentPage - 1) * LIMIT + index + 1}</td>
-
+                    <td>
+                      {(currentPage - 1) * LIMIT + index + 1}
+                    </td>
                     <td>{c.companyName}</td>
                     <td>{c.contactPerson}</td>
                     <td>{c.email}</td>
@@ -199,7 +213,9 @@ const CompanyList = () => {
                     <td>
                       <span
                         className={`badge ${
-                          c.status === "Active" ? "bg-success" : "bg-danger"
+                          c.status === "Active"
+                            ? "bg-success"
+                            : "bg-danger"
                         }`}
                       >
                         {c.status}
@@ -231,7 +247,9 @@ const CompanyList = () => {
 
                         <button
                           className="btn btn-sm btn-danger"
-                          onClick={() => deleteCompany(c._id)}
+                          onClick={() =>
+                            deleteCompany(c._id)
+                          }
                         >
                           <i className="fas fa-trash"></i>
                         </button>
@@ -243,15 +261,18 @@ const CompanyList = () => {
             </tbody>
           </table>
 
-          {/* PAGINATION RIGHT SIDE */}
           <nav className="d-flex justify-content-end mt-3">
             <ul className="pagination">
               <li
-                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+                className={`page-item ${
+                  currentPage === 1 ? "disabled" : ""
+                }`}
               >
                 <button
                   className="page-link"
-                  onClick={() => handlePage(currentPage - 1)}
+                  onClick={() =>
+                    handlePage(currentPage - 1)
+                  }
                 >
                   Previous
                 </button>
@@ -260,11 +281,17 @@ const CompanyList = () => {
               {renderPagination()}
 
               <li
-                className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
+                className={`page-item ${
+                  currentPage === totalPages
+                    ? "disabled"
+                    : ""
+                }`}
               >
                 <button
                   className="page-link"
-                  onClick={() => handlePage(currentPage + 1)}
+                  onClick={() =>
+                    handlePage(currentPage + 1)
+                  }
                 >
                   Next
                 </button>

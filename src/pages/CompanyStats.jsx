@@ -11,21 +11,32 @@ const CompanyStats = () => {
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
 
- const API = API_URLS.COMPANY.DETAILS;
+  const API = API_URLS.COMPANY.DETAILS;
+
+  // ✅ GET TOKEN
+  const getToken = () =>
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
 
   /* ================= FETCH COMPANY ================= */
 
   const fetchCompany = async () => {
     try {
 
-      const res = await axios.get(API + id);
+      const res = await axios.get(`${API}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      });
 
-      setCompany(res.data.data);
+      console.log("API RESPONSE:", res.data);
+
+      // ✅ FIXED RESPONSE
+      setCompany(res.data.company);
 
     } catch (error) {
-
+      console.log("ERROR:", error.response);
       Swal.fire("Error", "Company not found", "error");
-
     } finally {
       setLoading(false);
     }
@@ -74,32 +85,32 @@ const CompanyStats = () => {
 
           <h5 className="text-primary mb-3">
             <i className="fas fa-building me-2"></i>
-            {company.companyName}
+            {company.name}
           </h5>
 
           <div className="row">
 
-            <div className="col-md-4 col-12 mb-2">
+            <div className="col-md-4 mb-2">
               <strong>Contact :</strong> {company.contactPerson}
             </div>
 
-            <div className="col-md-4 col-12 mb-2">
+            <div className="col-md-4 mb-2">
               <strong>Email :</strong> {company.email}
             </div>
 
-            <div className="col-md-4 col-12 mb-2">
+            <div className="col-md-4 mb-2">
               <strong>Plan :</strong> {company.subscriptionPlan}
             </div>
 
-            <div className="col-md-4 col-12 mb-2">
-              <strong>Mobile :</strong> {company.contactMobile}
+            <div className="col-md-4 mb-2">
+              <strong>Mobile :</strong> {company.mobile}
             </div>
 
-            <div className="col-md-4 col-12 mb-2">
-              <strong>Phone :</strong> {company.phoneNumber}
+            <div className="col-md-4 mb-2">
+              <strong>Phone :</strong> {company.phone}
             </div>
 
-            <div className="col-md-4 col-12 mb-2">
+            <div className="col-md-4 mb-2">
               <strong>Status :</strong>
               <span
                 className={`badge ms-2 ${
@@ -153,16 +164,19 @@ const CompanyStats = () => {
           <table className="table table-bordered mb-0">
             <tbody>
 
-              <Row label="Company Name" value={company.companyName}/>
+              <Row label="Company Name" value={company.name}/>
               <Row label="Contact Person" value={company.contactPerson}/>
               <Row label="Email" value={company.email}/>
-              <Row label="Mobile" value={company.contactMobile}/>
-              <Row label="Phone" value={company.phoneNumber}/>
+              <Row label="Mobile" value={company.mobile}/>
+              <Row label="Phone" value={company.phone}/>
               <Row label="Plan" value={company.subscriptionPlan}/>
-              <Row label="Status"
+              <Row
+                label="Status"
                 value={
                   <span className={`badge ${
-                    company.status==="Active"?"bg-success":"bg-danger"
+                    company.status === "Active"
+                      ? "bg-success"
+                      : "bg-danger"
                   }`}>
                     {company.status}
                   </span>
