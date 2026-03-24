@@ -52,40 +52,18 @@ const Sidebar = () => {
 
             {/* ================= Applications ================= */}
 
-            <li className={`nxl-item nxl-hasmenu ${openMenu === "apps" ? "active" : ""}`}>
-
-              <div
-                className="nxl-link"
-                onClick={() => toggleMenu("apps")}
-                style={{ cursor: "pointer" }}
-              >
+            <li className="nxl-item">
+              <Link className="nxl-link" to="/dashboard/subscription-plan">
 
                 <span className="nxl-micon">
-                  <i className="feather-send"></i>
+                  <i className="feather-airplay"></i>
                 </span>
 
                 <span className="nxl-mtext">
-                  Applications
+                   Subscription Plan
                 </span>
 
-                <span className="nxl-arrow">
-                  <i className="feather-chevron-right"></i>
-                </span>
-
-              </div>
-
-              {openMenu === "apps" && (
-                <ul className="nxl-submenu">
-
-                  <li className="nxl-item">
-                    <Link className="nxl-link" to="/dashboard/chat">
-                      Chat
-                    </Link>
-                  </li>
-
-                </ul>
-              )}
-
+              </Link>
             </li>
 
             {/* ================= Company Management ================= */}
@@ -127,6 +105,12 @@ const Sidebar = () => {
                     </Link>
                   </li>
 
+                    {/* ✅ NEW MODULE 1 */}
+    <li className="nxl-item">
+      <Link className="nxl-link" to="/dashboard/create-login">
+        Create Login
+      </Link>
+    </li>
                 </ul>
               )}
 

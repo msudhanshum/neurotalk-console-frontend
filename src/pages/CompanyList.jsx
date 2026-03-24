@@ -205,7 +205,7 @@ const CompanyList = () => {
                     <td>
                       {(currentPage - 1) * LIMIT + index + 1}
                     </td>
-                    <td>{c.companyName}</td>
+                    <td>{c.name}</td>
                     <td>{c.contactPerson}</td>
                     <td>{c.email}</td>
                     <td>{c.subscriptionPlan}</td>

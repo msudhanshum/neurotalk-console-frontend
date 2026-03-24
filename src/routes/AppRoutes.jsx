@@ -16,6 +16,9 @@ import AddCompany from "../pages/AddCompany.jsx";
 import EditCompany from "../pages/EditCompany.jsx";
 import CompanyStats from "../pages/CompanyStats.jsx";
 
+import CreateLogin from "../pages/CreateLogin.jsx";
+import SubscriptionPlan from "../pages/SubscriptionPlan.jsx";
+
 const AppRoutes = () => {
 
   return (
@@ -53,8 +56,12 @@ const AppRoutes = () => {
 
           <Route path="company-list" element={<CompanyList />} />
           <Route path="add-company" element={<AddCompany />} />
+         
           <Route path="edit-company/:id" element={<EditCompany />} />
           <Route path="company-stats/:id" element={<CompanyStats />} />
+          <Route path="create-login" element={<CreateLogin />} />
+          <Route path="subscription-plan" element={<SubscriptionPlan />} />
+
 
         </Route>
 
