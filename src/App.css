@@ -18,6 +18,18 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.layout-wrapper {
+  margin-left: 50px;        /* sidebar width */
+  margin-top:  0.2vh;       /* header height */
+  padding: 20px;
+  min-height: calc(100vh - 10.2vh - 50px);
+  background:  hsl(202, 27%, 77%);;
+}
+
+.main-content {
+  width: 100%;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
