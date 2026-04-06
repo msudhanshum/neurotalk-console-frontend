@@ -103,7 +103,7 @@ const Login: React.FC = () => {
         <aside className="login-brand">
           <div>
             <div className="brand-chip">Neurotalk Console</div>
-            <h1 className="brand-title">Welcome back, team admin.</h1>
+            <h1 className="brand-title">Welcome to Neurotalk Console.</h1>
             <p className="brand-copy">
               Access your control center for user management, campaign insights,
               and conversation intelligence in one place.
