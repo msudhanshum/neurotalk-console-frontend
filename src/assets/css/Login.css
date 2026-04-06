@@ -1,0 +1,303 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
+
+:root {
+  --login-bg-1: #04182f;
+  --login-bg-2: #0e3f5f;
+  --login-accent: #ff8f3f;
+  --login-accent-soft: #ffd0ab;
+  --login-surface: #ffffff;
+  --login-ink: #12283f;
+  --login-muted: #6e7d8f;
+  --login-border: #dbe4ec;
+  --login-danger-bg: #ffe8e5;
+  --login-danger-text: #c23a2b;
+  --login-shadow: 0 22px 60px rgba(4, 24, 47, 0.22);
+  --login-focus: 0 0 0 4px rgba(255, 143, 63, 0.2);
+}
+
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 3vw, 42px);
+  background:
+    radial-gradient(circle at 90% -5%, rgba(255, 143, 63, 0.28), transparent 38%),
+    radial-gradient(circle at -10% 110%, rgba(77, 177, 255, 0.3), transparent 42%),
+    linear-gradient(135deg, var(--login-bg-1), var(--login-bg-2));
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.login-shell {
+  width: min(1040px, 100%);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: var(--login-shadow);
+  backdrop-filter: blur(1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.login-brand {
+  padding: clamp(28px, 4vw, 52px);
+  color: #f4fbff;
+  background:
+    linear-gradient(162deg, rgba(5, 24, 41, 0.34), rgba(5, 24, 41, 0.08)),
+    linear-gradient(162deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 25% 15%, rgba(255, 143, 63, 0.34), transparent 40%);
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.brand-chip {
+  width: max-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.4vw, 2.7rem);
+  line-height: 1.08;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 3px 12px rgba(4, 20, 34, 0.48);
+  max-width: 11ch;
+}
+
+.brand-copy {
+  margin: 14px 0 0;
+  max-width: 34ch;
+  color: rgba(244, 251, 255, 0.86);
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.brand-points {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brand-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(244, 251, 255, 0.92);
+  font-size: 0.95rem;
+}
+
+.brand-points i {
+  color: var(--login-accent-soft);
+  font-size: 0.95rem;
+}
+
+.login-panel {
+  background: var(--login-surface);
+  padding: clamp(26px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.login-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 143, 63, 0.09), transparent 38%),
+    radial-gradient(circle at 0% 100%, rgba(77, 177, 255, 0.11), transparent 35%);
+  pointer-events: none;
+}
+
+.panel-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.login-heading {
+  margin: 0;
+  font-size: 1.9rem;
+  color: var(--login-ink);
+  letter-spacing: -0.02em;
+}
+
+.login-subheading {
+  margin: 9px 0 28px;
+  color: var(--login-muted);
+  font-size: 0.96rem;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #3a4e65;
+}
+
+.field-input {
+  width: 100%;
+  border: 1px solid var(--login-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  color: var(--login-ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--login-accent);
+  box-shadow: var(--login-focus);
+  transform: translateY(-1px);
+}
+
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap .field-input {
+  padding-right: 48px;
+}
+
+.toggle-pass {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #6f7f91;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.toggle-pass:hover {
+  background: #eef3f7;
+  color: #354d65;
+}
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+
+.remember-row input {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--login-accent);
+  cursor: pointer;
+}
+
+.remember-row label {
+  margin: 0;
+  font-size: 0.91rem;
+  color: #4f6378;
+  cursor: pointer;
+}
+
+.lock-warning {
+  margin-bottom: 14px;
+  border: 1px solid #ffd1cb;
+  background: var(--login-danger-bg);
+  color: var(--login-danger-text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.login-button {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 16px;
+  background: linear-gradient(135deg, #ff8f3f, #ff6e2a);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 12px 22px rgba(255, 110, 42, 0.27);
+}
+
+.login-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 15px 26px rgba(255, 110, 42, 0.35);
+  filter: brightness(1.03);
+}
+
+.login-button:disabled {
+  cursor: not-allowed;
+  background: #b7c4d0;
+  box-shadow: none;
+  transform: none;
+  filter: none;
+}
+
+.tiny-note {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #77889a;
+}
+
+@media (max-width: 960px) {
+  .login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .login-brand {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    gap: 18px;
+  }
+
+  .brand-title {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .login-page {
+    padding: 12px;
+  }
+
+  .login-shell {
+    border-radius: 18px;
+  }
+
+  .login-brand,
+  .login-panel {
+    padding: 22px 18px;
+  }
+
+  .login-heading {
+    font-size: 1.6rem;
+  }
+}
