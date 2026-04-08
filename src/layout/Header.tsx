@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import image from "../assets/images/logo/NeuroTalk_logo.jpeg";
 
 const Header: React.FC = () => {
-  const [active, setActive] = useState<string>("Business Phone System");
+  const [active, setActive] = useState<string>(""); // ✅ FIXED
   const navigate = useNavigate();
 
   const handleNavClick = (name: string, path: string): void => {
@@ -14,58 +14,75 @@ const Header: React.FC = () => {
   return (
     <>
       <style>{`
+        /* 🌈 HEADER */
         .custom-header {
-  height: 9vh;
-  background: #fff;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
+          height: 9vh;
+          background: linear-gradient(135deg, #ffffff, #f5f7fb);
+          border-bottom: 2px solid #433a7a;
+          display: flex;
+          align-items: center;
+          padding: 0 25px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1000;
+        }
 
-  position: fixed;   /* ✅ ADD THIS */
-  top: 0;            /* ✅ ADD THIS */
-  left: 0;           /* ✅ ADD THIS */
-  width: 100%;       /* ✅ ADD THIS */
-  z-index: 1000;     /* ✅ ADD THIS (keeps it above everything) */
-}
-
+        /* 🧠 LOGO */
         .logo {
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 6px;
           font-weight: 600;
           font-size: 18px;
           cursor: pointer;
-          margin-left:-0.7vw
+          transition: 0.3s;
+          margin-left:-1vw;
+        }
+
+        .logo:hover {
+          transform: scale(1.05);
+          box-shadow: 0 0 1px 1px grey;
+          border-radius:100px;
         }
 
         .logo img {
-          width: 50px;
-          background-color:green
+          width: 48px;
+          border-radius: 100px;
+           
         }
 
+        /* 📍 NAV */
         .header-center {
-          margin-left: 40px;
+          margin-left: 50px;
           display: flex;
-          gap: 30px;
+          gap: 35px;
         }
 
         .nav-item {
           font-size: 14px;
           color: #555;
           cursor: pointer;
-          padding-bottom: 1px;
           position: relative;
+          padding: 6px 0;
+          transition: 0.3s;
+        }
+
+        /* ✨ Hover ONLY */
+        .nav-item:hover {
+          color: #2575fc;
         }
 
         .nav-item::after {
           content: "";
           position: absolute;
           left: 0;
-          bottom: 0;
+          bottom: -2px;
           width: 0%;
           height: 3px;
-          background: #f47c2c;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
           transition: 0.3s ease;
         }
 
@@ -73,20 +90,7 @@ const Header: React.FC = () => {
           width: 100%;
         }
 
-        .nav-item:hover {
-          color: #000;
-        }
-
-        .btn-orange {
-          background: #f47c2c;
-          color: #fff;
-          padding: 8px 15px;
-          border-radius: 20px;
-          border: none;
-          font-size: 13px;
-          cursor: pointer;
-        }
-
+        /* 👉 RIGHT SIDE */
         .header-right {
           margin-left: auto;
           display: flex;
@@ -94,10 +98,46 @@ const Header: React.FC = () => {
           gap: 15px;
         }
 
+        /* 🎯 BUTTONS */
+        .btn-orange {
+          background: linear-gradient(135deg, #ff7e5f, #feb47b);
+          color: #fff;
+          padding: 8px 16px;
+          border-radius: 20px;
+          border: none;
+          font-size: 13px;
+          cursor: pointer;
+          transition: 0.3s;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .btn-orange:hover {
+          transform: translateY(-2px) scale(1.05);
+          box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        }
+
+        /* 📞 SECOND BUTTON */
+        .btn-orange.secondary {
+          background: linear-gradient(135deg, #36d1dc, #5b86e5);
+        }
+
+        /* 🔔 ICON */
+        .header-right i {
+          font-size: 18px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .header-right i:hover {
+          color: #2575fc;
+          transform: scale(1.2);
+        }
+
+        /* 👤 PROFILE */
         .profile-circle {
-          width: 35px;
-          height: 35px;
-          background: #2c3e50;
+          width: 38px;
+          height: 38px;
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
           color: #fff;
           border-radius: 50%;
           display: flex;
@@ -105,6 +145,12 @@ const Header: React.FC = () => {
           justify-content: center;
           font-weight: 600;
           cursor: pointer;
+          transition: 0.3s;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .profile-circle:hover {
+          transform: scale(1.1);
         }
       `}</style>
 
@@ -112,16 +158,11 @@ const Header: React.FC = () => {
 
         {/* LEFT */}
         <div className="logo" onClick={() => navigate("/dashboard")}>
-          <img
-            src={image} alt="logo"
-          />
-           
+          <img src={image} alt="logo" />
         </div>
 
         {/* CENTER NAV */}
         <div className="header-center">
-
-          
 
           <div
             className="nav-item"
@@ -160,10 +201,7 @@ const Header: React.FC = () => {
 
           <button className="btn-orange">Schedule A Demo</button>
 
-          <button
-            className="btn-orange"
-            style={{ background: "#ff8c42" }}
-          >
+          <button className="btn-orange secondary">
             📞 Open Dialer
           </button>
 
@@ -171,7 +209,7 @@ const Header: React.FC = () => {
 
           <div
             className="profile-circle"
-          onClick={() => navigate("/dashboard/profile")}
+            onClick={() => navigate("/dashboard/profile")}
           >
             Y
           </div>

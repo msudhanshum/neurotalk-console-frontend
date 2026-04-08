@@ -92,113 +92,235 @@ const Profile: React.FC = () => {
 
   return (
     <>
-      <style>{`
-        .profile-page {
-          padding: 20px;
-          min-height: 100%;
-          background: hsl(202, 27%, 77%);
-          margin-top:-5.5vh;
-          margin-left:-3vw;
-          width:100vw;
-        }
+     <style>{`
+/* 🌈 PAGE */
+.profile-page {
+  padding: 20px;
+  min-height: 100%;
+  background: linear-gradient(135deg, #eef2f7, #d9e4f5);
+  margin-top: -5.5vh;
+  margin-left: -3vw;
+  width: 100vw;
+}
 
-        .profile-wrapper {
-          padding: 25px;
-          border-radius: 12px;
-          background: hsl(202, 27%, 77%);
-        }
+/* 📦 WRAPPER */
+.profile-wrapper {
+  padding: 25px;
+  border-radius: 16px;
+}
 
-        .profile-title {
-          margin-bottom: 20px;
-          font-weight: 600;
-          color: black;
-          margin-top:-3vh;
-          margin-bottom:1vh;
-        }
+/* 🏷 TITLE */
+.profile-title {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-top: 5vh;
+  margin-bottom: 10px;
+}
 
-        .card {
-          border: none;
-          border-radius: 10px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          margin-top:1vh;
-        }
+/* 🪪 CARD */
+.card {
+  border: none;
+  WIDTH:60VW;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  transition: 0.3s ease;
+}
 
-        .profile-overview {
-          text-align: left;
-          font-weight: 600;
-          margin-bottom: 10px;
-          color:black;
-        }
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
 
-        hr {
-          margin: 8px 0;
-        }
+.profile-overview-card1:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 
-        .info-row {
-          display: grid;
-          grid-template-columns: 200px 1fr;
-          padding: 10px 0;
-          border-bottom: 1px solid #ddd;
-        }
+}
 
-        .profile-alert {
-          position: fixed;
-          top: 15px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: #ff4d4f;
-          color: white;
-          padding: 10px 20px;
-          border-radius: 6px;
-          font-weight: 500;
-          z-index: 1000;
-          cursor: pointer;
-        }
+/* 👤 PROFILE TITLE */
+.profile-overview {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2575fc;
+ 
+}
 
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0,0,0,0.4);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 999;
-        }
+.profile-overview-card1{
+width:30vw;
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  transition: 0.3s ease;
+  
+}
 
-        .modal-box {
-          background: white;
-          padding: 20px;
-          border-radius: 10px;
-          width: 400px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
+/* 📏 ROWS */
+.info-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
 
-        .modal-box input, .modal-box select {
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
-        }
+.info-row span:first-child {
+  font-weight: 600;
+  color: #555;
+}
 
-        .modal-actions {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 10px;
-        }
+.info-row span:last-child {
+  color: #333;
+}
 
-        .profile-img {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 3px solid #ddd;
-        }
-      `}</style>
+/* 🚨 ALERT */
+.profile-alert {
+  position: fixed;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ff4d4f, #ff7a7a);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-weight: 500;
+  z-index: 1000;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: slideDown 0.4s ease;
+}
 
+/* 🪟 MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: scaleIn 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+.modal-box h5 {
+  text-align: center;
+  color: #2575fc;
+  font-weight: 600;
+}
+
+/* ✍️ INPUTS */
+.modal-box input,
+.modal-box select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.modal-box input:focus,
+.modal-box select:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 5px rgba(37,117,252,0.4);
+}
+
+/* 🔘 BUTTONS */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-actions button:first-child {
+  background: #eee;
+}
+
+.modal-actions button:last-child {
+  background: linear-gradient(135deg, #36d1dc, #5b86e5);
+  color: white;
+}
+
+.modal-actions button:hover {
+  transform: scale(1.05);
+}
+
+/* 🖼 PROFILE IMAGE */
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #6a11cb, #2575fc) border-box;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 🎯 BUTTONS (existing bootstrap enhance) */
+.btn {
+  border-radius: 20px !important;
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* 📊 TABLE */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th {
+  background: #f4f6fb;
+  font-weight: 600;
+}
+
+.table td {
+  font-size: 13px;
+}
+
+/* ✨ ANIMATIONS */
+@keyframes slideDown {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+`}</style>
       {isProfileIncomplete && (
         <div
           className="profile-alert"
@@ -216,8 +338,8 @@ const Profile: React.FC = () => {
 
           <div className="row">
 
-            <div className="col-md-4">
-              <div className="card p-3 text-center">
+            <div className=" col-md-4">
+              <div className="profile-overview-card1 p-3 text-center">
 
                 <p className="profile-overview">Profile Overview</p>
 

@@ -1,7 +1,8 @@
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
+import "../assets/css/Login.css";
 
 type FormDataType = {
   email: string;
@@ -20,6 +21,7 @@ const Login: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [lockTime, setLockTime] = useState<number>(0);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -52,13 +54,10 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/v1/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const res = await axios.post("http://localhost:5000/api/v1/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
       showToast("success", res.data.message);
 
@@ -72,8 +71,7 @@ const Login: React.FC = () => {
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
 
-      const message =
-        err.response?.data?.message || "Login failed";
+      const message = err.response?.data?.message || "Login failed";
 
       showToast("error", message);
 
@@ -83,7 +81,6 @@ const Login: React.FC = () => {
     setLoading(false);
   };
 
-  // lock timer
   useEffect(() => {
     if (lockTime <= 0) return;
 
@@ -101,119 +98,110 @@ const Login: React.FC = () => {
   }, [lockTime]);
 
   return (
-    <>
-      <style>{`
-        .login-wrapper{
-          height:100vh;
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          background:#f4f6f9;
-          font-family:Arial;
-        }
+    <div className="login-page">
+      <div className="login-shell">
+        <aside className="login-brand">
+          <div>
+            <div className="brand-chip">Neurotalk Console</div>
+            <h1 className="brand-title">Welcome to Neurotalk Console.</h1>
+            <p className="brand-copy">
+              Access your control center for user management, campaign insights,
+              and conversation intelligence in one place.
+            </p>
+          </div>
 
-        .login-card{
-          width:100%;
-          max-width:420px;
-          background:white;
-          padding:40px;
-          border-radius:10px;
-          box-shadow:0 10px 25px rgba(0,0,0,0.1);
-        }
+          <ul className="brand-points">
+            <li>
+              <i className="fas fa-check-circle" aria-hidden="true" />
+              Role-based access and secure sessions
+            </li>
+            <li>
+              <i className="fas fa-check-circle" aria-hidden="true" />
+              Real-time performance visibility
+            </li>
+            <li>
+              <i className="fas fa-check-circle" aria-hidden="true" />
+              Faster day-to-day admin operations
+            </li>
+          </ul>
+        </aside>
 
-        .login-card h2{
-          text-align:center;
-          margin-bottom:25px;
-        }
+        <section className="login-panel">
+          <div className="panel-inner">
+            <h2 className="login-heading">Sign in</h2>
+            <p className="login-subheading">Use your admin credentials to continue.</p>
 
-        .login-card input{
-          width:100%;
-          padding:12px;
-          margin-bottom:15px;
-          border:1px solid #ddd;
-          border-radius:6px;
-        }
-
-        .login-card button{
-          width:100%;
-          padding:12px;
-          background:#4a6cf7;
-          border:none;
-          color:white;
-          border-radius:6px;
-          cursor:pointer;
-        }
-
-        .login-card button:disabled{
-          background:#999;
-        }
-
-        .remember-row{
-          display:flex;
-          align-items:center;
-          margin-bottom:15px;
-        }
-
-        .remember-row input{
-          width:auto;
-          margin-right:8px;
-        }
-
-        .lock-warning{
-          background:#fff3cd;
-          padding:10px;
-          border-radius:5px;
-          margin-bottom:10px;
-          text-align:center;
-        }
-      `}</style>
-
-      <div className="login-wrapper">
-        <div className="login-card">
-          <h2>Admin Login</h2>
-
-          <form onSubmit={handleLogin}>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-
-            <div className="remember-row">
-              <input
-                type="checkbox"
-                name="remember"
-                checked={formData.remember}
-                onChange={handleChange}
-              />
-              <label>Remember Me</label>
-            </div>
-
-            {lockTime > 0 && (
-              <div className="lock-warning">
-                Try again in {lockTime}s
+            <form onSubmit={handleLogin}>
+              <div className="field">
+                <label htmlFor="email" className="field-label">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  className="field-input"
+                  type="email"
+                  name="email"
+                  placeholder="you@company.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
-            )}
 
-            <button type="submit" disabled={loading || lockTime > 0}>
-              {loading ? "Logging..." : "Login"}
-            </button>
-          </form>
-        </div>
+              <div className="field">
+                <label htmlFor="password" className="field-label">
+                  Password
+                </label>
+                <div className="password-wrap">
+                  <input
+                    id="password"
+                    className="field-input"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="toggle-pass"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    <i
+                      className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div className="remember-row">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  name="remember"
+                  checked={formData.remember}
+                  onChange={handleChange}
+                />
+                <label htmlFor="remember">Remember this device</label>
+              </div>
+
+              {lockTime > 0 && (
+                <div className="lock-warning">Too many attempts. Try again in {lockTime}s.</div>
+              )}
+
+              <button className="login-button" type="submit" disabled={loading || lockTime > 0}>
+                {loading ? "Signing in..." : "Access Dashboard"}
+              </button>
+            </form>
+
+            <p className="tiny-note">Protected by secure authentication and session controls.</p>
+          </div>
+        </section>
       </div>
-    </>
+    </div>
   );
 };
 
