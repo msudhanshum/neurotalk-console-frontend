@@ -2,6 +2,7 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
+import Chatbot from "./chatbot/chatbot";
 
 const MainLayout: React.FC = () => {
   return (
@@ -34,6 +35,7 @@ const MainLayout: React.FC = () => {
       </div>
 
       <Footer />
+      <Chatbot/>
     </>
   );
 };

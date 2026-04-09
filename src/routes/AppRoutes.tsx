@@ -6,6 +6,7 @@ import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Profile from "../component/Profile";
+ 
 
 const AppRoutes: React.FC = () => {
   return (
