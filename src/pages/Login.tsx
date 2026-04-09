@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import "../assets/css/Login.css";
+import { API_URLS } from "../api/apiConstants";
 
 type FormDataType = {
   email: string;
@@ -54,7 +55,7 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/auth/login", {
+      const res = await axios.post(API_URLS.AUTH.LOGIN, {
         email: formData.email,
         password: formData.password,
       });

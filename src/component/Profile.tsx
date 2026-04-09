@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URLS } from "../api/apiConstants";
 
 const Profile: React.FC = () => {
 
@@ -26,14 +27,11 @@ const Profile: React.FC = () => {
           localStorage.getItem("token") ||
           sessionStorage.getItem("token");
 
-        const res = await axios.get(
-          "http://localhost:5000/api/v1/company/me",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+        const res = await axios.get(API_URLS.COMPANY.ME, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
+        });
 
         setCompany(res.data.company);
         setFormData(res.data.company);
