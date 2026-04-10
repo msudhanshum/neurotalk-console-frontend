@@ -30,6 +30,18 @@ const Sidebar: React.FC = () => {
           width: 100%;
         }
 
+        .nxl-dropdown-wrap {
+          position: relative;
+          width: 100%;
+        }
+
+        .nxl-dropdown-wrap:hover .nxl-flyout {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(0);
+          pointer-events: auto;
+        }
+
         /* 🔘 ICON LINK */
         .nxl-link {
           display: flex;
@@ -41,6 +53,58 @@ const Sidebar: React.FC = () => {
           transition: all 0.3s ease;
           border-radius: 12px;
           margin: 5px;
+        }
+
+        .nxl-toggle {
+          appearance: none;
+          background: transparent;
+          border: 0;
+        }
+
+        .nxl-flyout {
+          position: absolute;
+          top: 5px;
+          left: 68px;
+          width: 190px;
+          padding: 8px;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.98);
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateX(-8px);
+          pointer-events: none;
+          transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+        }
+
+        .nxl-flyout-title {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #64748b;
+          padding: 4px 10px 8px;
+        }
+
+        .nxl-flyout-link {
+          display: flex;
+          align-items: center;
+          min-height: 40px;
+          padding: 0 12px;
+          margin: 3px 0;
+          border-radius: 10px;
+          text-decoration: none;
+          color: #334155;
+          font-size: 13px;
+          font-weight: 600;
+          transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .nxl-flyout-link:hover {
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
+          color: #fff;
         }
 
         /* ✨ HOVER EFFECT */
@@ -100,6 +164,25 @@ const Sidebar: React.FC = () => {
               <i className="feather-grid nxl-micon"></i>
             </Link>
             <span className="tooltip">Dashboard</span>
+          </li>
+
+          <li className="nxl-item">
+            <div className="nxl-dropdown-wrap">
+              <button type="button" className="nxl-link nxl-toggle" aria-label="Contacts menu">
+                <i className="feather-book-open nxl-micon"></i>
+              </button>
+              <span className="tooltip">Contacts</span>
+
+              <div className="nxl-flyout">
+                <div className="nxl-flyout-title">Contacts</div>
+                <Link className="nxl-flyout-link" to="/contact-management">
+                  Contact Management
+                </Link>
+                <Link className="nxl-flyout-link" to="/group-management">
+                  Group Management
+                </Link>
+              </div>
+            </div>
           </li>
 
           <li className="nxl-item">

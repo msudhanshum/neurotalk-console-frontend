@@ -10,4 +10,17 @@ export const API_URLS = {
   COMPANY: {
     ME: buildUrl("/api/v1/company/me"),
   },
+  CONTACTS: {
+    LIST: buildUrl("/api/v1/company/contacts"),
+    CREATE: buildUrl("/api/v1/company/contacts"),
+    BULK_IMPORT: buildUrl("/api/v1/company/contacts/bulk"),
+    UPDATE: (id) => buildUrl(`/api/v1/company/contacts/${id}`),
+    SOFT_DELETE: (id) => buildUrl(`/api/v1/company/contacts/${id}/archive`),
+    RESTORE: (id) => buildUrl(`/api/v1/company/contacts/${id}/restore`),
+  },
+  CONTACT_GROUPS: {
+    LIST: buildUrl("/api/v1/company/contact-groups"),
+    CREATE: buildUrl("/api/v1/company/contact-groups"),
+    DELETE: (id) => buildUrl(`/api/v1/company/contact-groups/${id}`),
+  },
 };
