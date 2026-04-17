@@ -19,7 +19,7 @@
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   transition: 0.3s ease;
-  position: relative; /* ✅ FIX ADDED */
+  position: relative;
   z-index: 2;
 }
 
@@ -41,7 +41,6 @@
   overflow: hidden;
   animation: fadeIn 0.3s ease;
 
-  /* ✅ FIX ADDED */
   position: absolute;
   bottom: 80px;
   right: 0;
@@ -85,7 +84,6 @@
   animation: slideUp 0.2s ease;
 }
 
-/* 👤 User */
 .chat-message.user {
   background: linear-gradient(135deg, #36d1dc, #5b86e5);
   color: white;
@@ -93,7 +91,6 @@
   border-bottom-right-radius: 2px;
 }
 
-/* 🤖 Bot */
 .chat-message.bot {
   background: #ffffff;
   color: #333;
@@ -127,7 +124,6 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* ⬅️ Back Button */
 .option-btn:active {
   transform: scale(0.97);
 }
@@ -170,31 +166,44 @@
   transform: scale(1.05);
 }
 
-/* 🪟 Modal Overlay */
+/* 🪟 Modal Overlay (FIXED CENTER) */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
+  width: 100vw;
+  height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+
+  background: rgba(0,0,0,0.6);
   backdrop-filter: blur(3px);
+
+  z-index: 99999;
+  pointer-events: all;
 }
 
-/* 🧾 Modal Box */
+/* 🧾 Modal Box (FIXED CENTER + SQUARE) */
 .modal {
   background: white;
   padding: 20px;
   border-radius: 14px;
-  width: 320px;
+
+  width: 680px;
+  height: 680px;
+
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+
   gap: 10px;
   animation: scaleIn 0.3s ease;
+
+  margin: auto;
+  position: relative;
+  z-index: 100000;
 }
 
 .modal h3 {
@@ -227,24 +236,25 @@
 .modal-actions button {
   flex: 1;
   margin: 0 4px;
-  padding: 8px;
+  padding: 10px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: 0.3s;
-}
+  transition: all 0.3s ease;
 
-.modal-actions button:first-child {
-  background: linear-gradient(135deg, #36d1dc, #5b86e5);
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
   color: white;
-}
-
-.modal-actions button:last-child {
-  background: #eee;
+  font-weight: 500;
 }
 
 .modal-actions button:hover {
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  transform: scale(1.08);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+.modal-actions button:active {
+  transform: scale(0.98);
 }
 
 /* ✨ Animations */
