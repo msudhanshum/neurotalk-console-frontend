@@ -203,7 +203,7 @@ const Profile: React.FC = () => {
               <div className="profile-overview-card1 p-3 text-center">
                 <p className="profile-overview">Profile Overview</p>
                 <img
-                  src={company?.image || "https://randomuser.me/api/portraits/men/32.jpg"}
+                  src={company?.image || "https://www.mjunction.in/wp-content/uploads/2020/09/Dummy.jpg"}
                   alt="profile"
                   className="profile-img mx-auto mb-3"
                 />

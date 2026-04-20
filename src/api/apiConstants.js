@@ -11,4 +11,8 @@ export const API_ENDPOINTS = {
     ME: `${BASE_URL}/company/me`,
     COMPLETE_PROFILE: `${BASE_URL}/company/complete-profile`,
   },
+  TICKETS:{
+    CREATE_TICKET:`${BASE_URL}/ticket/create`,
+    GET_TICKET: `${BASE_URL}/ticket/my-tickets`,
+  },
 };

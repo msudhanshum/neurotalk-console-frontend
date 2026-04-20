@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./chatbot.css";
+import axios from "axios";
+import { API_ENDPOINTS } from "../../api/apiConstants";
 
 type Message = {
   text: string;
@@ -42,7 +44,8 @@ const Chatbot: React.FC = () => {
 
   const toggleChat = () => setIsOpen(!isOpen);
 
-  const handleOptionClick = (option: string) => {
+  // ✅ FIXED: made async
+  const handleOptionClick = async (option: string) => {
     const userMessage: Message = { text: option, sender: "user" };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -107,17 +110,50 @@ const Chatbot: React.FC = () => {
       return;
     }
 
-    // ✅ UPDATED PART ONLY
+    // 🎫 CHECK TICKET STATUS (FULL FIXED)
     if (option === "Check Ticket Status") {
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: "📭 You have no tickets yet.",
-          sender: "bot",
-        },
-      ]);
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
 
-      setShowBackButton(true); // ✅ show back button
+      try {
+        const res = await axios.get(
+          API_ENDPOINTS.TICKETS.GET_TICKET,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        const tickets = res.data.tickets;
+
+        if (!tickets || tickets.length === 0) {
+          setMessages((prev) => [
+            ...prev,
+            { text: "📭 No tickets found.", sender: "bot" }
+          ]);
+        } else {
+          // ✅ FIXED: no loop state issue
+          const botMessages = tickets.map((t: any) => ({
+            text: `Ticket ID: ${t.ticketId}
+Status: ${t.status}`,
+            sender: "bot"
+          }));
+
+          setMessages((prev) => [...prev, ...botMessages]);
+        }
+
+      } catch (error) {
+        console.log("❌ Fetch ticket error:", error);
+
+        setMessages((prev) => [
+          ...prev,
+          { text: "❌ Failed to fetch tickets.", sender: "bot" }
+        ]);
+      }
+
+      setShowBackButton(true);
       return;
     }
   };
@@ -139,21 +175,50 @@ const Chatbot: React.FC = () => {
     setShowBackButton(true);
   };
 
-  const handleTicketSubmit = () => {
+  const handleTicketSubmit = async () => {
     if (!ticketData.name || !ticketData.email || !ticketData.issue) {
       alert("Please fill all fields");
       return;
     }
 
-    setShowTicketModal(false);
+    try {
+      const token =
+        localStorage.getItem("token") ||
+        sessionStorage.getItem("token");
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        text: `✅ Ticket Created Successfully! Your Ticket ID is ${ticketData.ticketId}`,
-        sender: "bot",
-      },
-    ]);
+      const res = await axios.post(
+        API_ENDPOINTS.TICKETS.CREATE_TICKET,
+        ticketData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log("✅ Ticket saved:", res.data);
+
+      setShowTicketModal(false);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: `✅ Ticket Created Successfully! ID: ${ticketData.ticketId}`,
+          sender: "bot",
+        },
+      ]);
+
+    } catch (error) {
+      console.log("❌ Ticket error:", error);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "❌ Failed to create ticket. Try again.",
+          sender: "bot",
+        },
+      ]);
+    }
 
     setShowBackButton(true);
   };
